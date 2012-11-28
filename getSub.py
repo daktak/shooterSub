@@ -52,5 +52,5 @@ for item in L:
 		else:
 		    print varDate,"[\033[1;31mFail\033[0m]",item
 
- #iconv -f big5 -t utf-8 Missing\ \(2012\)\ -\ s01e06\ -\ A\ Busy\ Solitude.srt  -cs > ~/out.txt
+ #iconv -f big5 -t utf-8 output.srt  -cs > ~/out.txt
 
