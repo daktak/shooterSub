@@ -3,12 +3,12 @@ shooterSub
 
 Automated solution to grab chinese subtitles from http://www.shooter.cn
 
+#install
+- copy shooterSub.ini and nosubs.srt to /etc/shootersub
+- copy getSub.py and shooterSub.py to /usr/local/bin
+
 #configure
-- edit getSub.py to specify the directory of your media files
-- ensure the shooterSub.py directory is correct
-- ensure shooterSub.py can reference the default message from shooter
-   
-	$ t = open('/usr/local/bin/nosubs.srt','rb')
+- edit shooterSub.ini to point to your video library 
 
 #automate
 - add getSub.py to your crontab
