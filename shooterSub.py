@@ -10,7 +10,6 @@ hasPath = True
 pathName = '';
 destCode = 'gbk'
 #movieFullPath = "/pub/video/test.avi"
-#movieFullPath = "/pub/video/tv_shows/Game of Thrones/Season 02/Game of Thrones - s02e01 - The North Remembers.mp4"
 if (len(sys.argv) > 1):
     movieFullPath = sys.argv[1]
 else:
