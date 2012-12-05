@@ -2,13 +2,20 @@
 # grab subs for all videos without subs
 # set videoDir corrcetly
 import os
+import sys
 import stat
 from time import gmtime, strftime
+from configobj import ConfigObj
+try: 
+    confFile = sys.argv[1]
+except :
+    confFile = '/etc/shootersub/shooterSub.ini'
+config = ConfigObj(confFile)
 
-movieExt = ['avi','mp4','wmv']
-subExt = ['srt','ass']
-videoDir = "/pub/video/tv_shows"
-shooterGrabber = "/usr/local/bin/shooterSub.py"
+movieExt = config['Options']['movieExt']
+subExt = config['Options']['subExt'] 
+videoDir = config['General']['videoDir']
+shooterGrabber =  config['General']['shooterGrabber']
 
 def walktree (top = ".", depthfirst = True):
     names = os.listdir(top)
