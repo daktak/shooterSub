@@ -5,10 +5,13 @@ import os
 #import xbmc
 import string
 import tempfile,urllib2,urllib,struct,gzip,StringIO,md5,xml.dom.minidom
-
+from configobj import ConfigObj
+confFile = '/etc/shootersub/shooterSub.ini'
+config = ConfigObj(confFile)
 hasPath = True 
 pathName = '';
-destCode = 'gbk'
+destCode = config['Options']['encoding'] 
+no_sub_file = config['General']['no_sub_file']
 #movieFullPath = "/pub/video/test.avi"
 if (len(sys.argv) > 1):
     movieFullPath = sys.argv[1]
@@ -124,7 +127,7 @@ else:
     sys.exit(5)
 
 f = open(fileName,'rb')
-t = open('/usr/local/bin/nosubs.srt','rb')
+t = open(no_sub_file,'rb')
 import hashlib
 h = hashlib.sha1()
 i = hashlib.sha1()
