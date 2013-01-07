@@ -54,13 +54,13 @@ for item in L:
             #print found
             if (not found):            
 	        varDate = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-                exitCode = os.system(shooterGrabber + " \"" + item +"\"");
+                exitCode = os.system(shooterGrabber + " \"" + item +"\"")
 		#exitCode = os.system("ls")
 		if (exitCode == 0):
 		    print varDate,"[\033[1;32mOK\033[0m]",item
 		else:
 		    if 'True' in fallback:
-		        exitCode = os.system(fallbackExec  + " \"" + item +"\"");
+		        exitCode = os.system(fallbackExec  + " \"" + item +"\"")
 		    else:
 		        print varDate,"[\033[1;31mFail\033[0m]",item
 
