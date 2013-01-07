@@ -132,7 +132,7 @@ else:
     sys.exit(5)
 
 #check file against shooters "no file" message
-print "Checking against "+no_sub_file
+#print "Checking against "+no_sub_file
 f = open(fileName,'rb')
 t = open(no_sub_file,'rb')
 import hashlib
