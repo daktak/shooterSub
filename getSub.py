@@ -16,6 +16,8 @@ movieExt = config['Options']['movieExt']
 subExt = config['Options']['subExt'] 
 videoDir = config['General']['videoDir']
 shooterGrabber =  config['General']['shooterGrabber']
+fallback = config['Options']['fallback']
+fallbackExec = config['Options']['fallbackExec']
 
 def walktree (top = ".", depthfirst = True):
     names = os.listdir(top)
@@ -57,7 +59,10 @@ for item in L:
 		if (exitCode == 0):
 		    print varDate,"[\033[1;32mOK\033[0m]",item
 		else:
-		    print varDate,"[\033[1;31mFail\033[0m]",item
+		    if 'True' in fallback:
+		        exitCode = os.system(fallbackExec  + " \"" + item +"\"");
+		    else:
+		        print varDate,"[\033[1;31mFail\033[0m]",item
 
  #iconv -f big5 -t utf-8 output.srt  -cs > ~/out.txt
 
