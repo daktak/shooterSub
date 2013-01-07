@@ -5,11 +5,21 @@ import os
 #import xbmc
 import string
 import tempfile,urllib2,urllib,struct,gzip,StringIO,md5,xml.dom.minidom
+from configobj import ConfigObj
+import chardet
+from guess_language import guessLanguageTag
 
+confFile = '/etc/shootersub/shooterSub.ini'
+config = ConfigObj(confFile)
 hasPath = True 
 pathName = '';
-destCode = 'gbk'
+destCode = config['Options']['encoding'] 
+no_sub_file = config['General']['no_sub_file']
+validLang = config['Options']['validLangs']
+url = config['Options']['url']
+
 #movieFullPath = "/pub/video/test.avi"
+
 if (len(sys.argv) > 1):
     movieFullPath = sys.argv[1]
 else:
@@ -48,8 +58,6 @@ for i in range(0,NumOfSegments):
 file.close()
 
 Boundary='----------------------------767a02e50d82'
-#svplayer 1-9
-url = 'http://www.shooter.cn/api/subapi.php'
 user_agent = 'SPlayer Build 2437'
 #580
 ContentType = "multipart/form-data; boundary=----------------------------767a02e50d82"
@@ -123,8 +131,10 @@ else:
     #print "Error: not found \t[\033[1;31mFail\033[0m]\n"
     sys.exit(5)
 
+#check file against shooters "no file" message
+print "Checking against "+no_sub_file
 f = open(fileName,'rb')
-t = open('/usr/local/bin/nosubs.srt','rb')
+t = open(no_sub_file,'rb')
 import hashlib
 h = hashlib.sha1()
 i = hashlib.sha1()
@@ -137,6 +147,32 @@ t.close()
 #print hash
 #print hash1
 if (hash == hash1) :
+    #print "No subs found"
     os.remove(fileName)
-    #print "removed"
     sys.exit(6)
+
+#check langauge against valid languages
+#print "checking for lang"
+f = open(fileName,'r+')
+raw = f.read()
+enc =  chardet.detect(raw)['encoding']
+text = raw.decode(enc,'ignore')
+lang = guessLanguageTag(text)
+noValid = True
+if any(lang in s for s in validLang):
+  #print s+" valid lang"
+  noValid = False
+if noValid:
+  #print "not valid lang found "+lang
+  os.remove(fileName)
+  sys.exit(7)
+
+#write out file with specified encoding
+if enc not in destCode:
+  print enc+" not in desired "+destCode
+  out = text.encode(destCode, "ignore")
+  f.seek(0)
+  f.truncate()
+  f.write(out)
+f.close()
+
