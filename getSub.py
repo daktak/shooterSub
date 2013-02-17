@@ -35,11 +35,13 @@ def walktree (top = ".", depthfirst = True):
         yield top, names
 
 L = []
-for (basepath, children) in walktree(videoDir,False):
-    for child in children:
-        #print os.path.join(basepath, child)
-        #print child
-        L.append(os.path.join(basepath, child))
+for videoir in videoDir:
+    print videoir
+    for (basepath, children) in walktree(videoir,False):
+        for child in children:
+            #print os.path.join(basepath, child)
+            #print child
+            L.append(os.path.join(basepath, child))
 
 found = False
 for item in L:
