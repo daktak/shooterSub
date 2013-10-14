@@ -120,7 +120,7 @@ if(len(the_page) > 2):
             data = the_page[nowPos:nowPos+fileLen[0]]
             if((ord(data[0]) == 255) and (ord(data[1]) == 254)):
                 temp_data = unicode(data[2:],'utf-16')
-                zip_file.write(temp_data.encode(destCode))
+                zip_file.write(temp_data.encode(destCode, 'ignore'))
             else:
                 zip_file.write(data)
 
