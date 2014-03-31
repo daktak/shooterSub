@@ -6,8 +6,10 @@ import sys
 import stat
 from time import gmtime, strftime
 from configobj import ConfigObj
+from daemon import runner
+
 try: 
-    confFile = sys.argv[1]
+    confFile = sys.argv[2]
 except :
     confFile = '/etc/shootersub/shooterSub.ini'
 config = ConfigObj(confFile)
@@ -34,8 +36,18 @@ def walktree (top = ".", depthfirst = True):
     if depthfirst:
         yield top, names
 
-L = []
-for videoir in videoDir:
+class App():
+ def __init__(self):
+  self.stdin_path = '/dev/null'
+  self.stdout_path = '/dev/tty'
+  self.stderr_path = '/dev/tty'
+  self.pidfile_path = '/var/run/getSub.pid'
+  self.pidfile_timeout = 0
+
+ def run(self):
+
+  L = []
+  for videoir in videoDir:
     print videoir
     for (basepath, children) in walktree(videoir,False):
         for child in children:
@@ -43,8 +55,8 @@ for videoir in videoDir:
             #print child
             L.append(os.path.join(basepath, child))
 
-found = False
-for item in L:
+  found = False
+  for item in L:
     for movext in movieExt:
         if (item.endswith(movext)):
             found = False
@@ -68,3 +80,6 @@ for item in L:
 
  #iconv -f big5 -t utf-8 output.srt  -cs > ~/out.txt
 
+app = App()
+daemon_runner = runner.DaemonRunner(app)
+daemon_runner.do_action()
